@@ -94,14 +94,69 @@ def create_buy_in(request):
             "details": "Slot doesn't exist."
         }, status=status.HTTP_403_FORBIDDEN)
     else:
-        create_buy_in = BuyInBooking(id= buyin_id)
-        create_buy_in.slot = slot
-        create_buy_in.user_id = user_id
-        create_buy_in.user_name = user_name
-        create_buy_in.save()
+        buy_in = BuyInBooking(id= buyin_id)
+        buy_in.slot = slot
+        buy_in.user_id = user_id
+        buy_in.user_name = user_name
+        buy_in.save()
         return Response({
             "status": True,
             "details": "Buy-In Booking Created."
         }, status=status.HTTP_201_CREATED)
 
 
+@APIView(["POST"])
+def create_pick_up(request):
+    try:
+        slot_id =   request.data['slot_id']
+    except:
+        return Response({
+            "status": False,
+            "details": "Please send slot id."
+        }, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        pickup_id =   request.data['pickup_id']
+    except:
+        return Response({
+            "status": False,
+            "details": "Please send buy-in id."
+        }, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user_id =   request.data['user_id']
+    except:
+        return Response({
+            "status": False,
+            "details": "Please send user id."
+        }, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user_name =   request.data['user_name']
+    except:
+        return Response({
+            "status": False,
+            "details": "Please send user's name."
+        }, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        message =   request.data['message']
+    except:
+        return Response({
+            "status": False,
+            "details": "Please send user's message."
+        }, status=status.HTTP_400_BAD_REQUEST)
+    slot = Slot.objects.get(slot_id=slot_id)
+    if slot==None:
+        return Response({
+            "status": False,
+            "details": "Slot doesn't exist."
+        }, status=status.HTTP_403_FORBIDDEN)
+    else:
+        pickup = PickUpBooking()
+        pickup.slot = slot
+        pickup.message = message
+        pickup.user_id = user_id
+        pickup.user_name = user_name
+        pickup.id = pickup_id
+        pickup.save()
+        return Response({
+            "status": True,
+            "details": "PickUp Booking Created."
+        }, status=status.HTTP_201_CREATED)

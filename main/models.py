@@ -23,7 +23,7 @@ class Slot(models.Model):
 class BuyInBooking(models.Model):
     id              = models.CharField(max_length=16, unique=True, primary_key=True)
     slot            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='buyin')
-    user_id = models.CharField(max_length=16, unique=True)
+    user_id = models.CharField(max_length=16, unique=True, null=True)
     user_name = models.CharField(max_length=100)
     is_fulfilled    = models.BooleanField(default=False)
 
@@ -32,8 +32,8 @@ class BuyInBooking(models.Model):
 
 class PickUpBooking(models.Model):
     id              = models.CharField(max_length=16, unique=True, primary_key=True)
-    Slot            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='pickup')
+    slot            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='pickup')
     is_fulfilled    = models.BooleanField(default=False)
-    user_id = models.CharField(max_length=16, unique=True)
+    user_id = models.CharField(max_length=16, unique=True, null=True)
     user_name = models.CharField(max_length=100)
     message         = models.CharField(max_length=256)
