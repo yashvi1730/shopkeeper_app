@@ -5,8 +5,6 @@ from .shopkeeper import Shop
 class Slot(models.Model):
     shop            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='slots')
     slot_id         = models.CharField(max_length=16, unique=True, primary_key=True)
-    user_id         = models.CharField(max_length=16, unique=True)
-    user_name       = models.CharField(max_length=100)
     start_time      = models.DateTimeField()
     stop_time       = models.DateTimeField()
     num_pickups     = models.IntegerField(default=0)
@@ -25,6 +23,8 @@ class Slot(models.Model):
 class BuyInBooking(models.Model):
     id              = models.CharField(max_length=16, unique=True, primary_key=True)
     slot            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='buyin')
+    user_id = models.CharField(max_length=16, unique=True)
+    user_name = models.CharField(max_length=100)
     is_fulfilled    = models.BooleanField(default=False)
 
 
@@ -34,4 +34,6 @@ class PickUpBooking(models.Model):
     id              = models.CharField(max_length=16, unique=True, primary_key=True)
     Slot            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='pickup')
     is_fulfilled    = models.BooleanField(default=False)
+    user_id = models.CharField(max_length=16, unique=True)
+    user_name = models.CharField(max_length=100)
     message         = models.CharField(max_length=256)
