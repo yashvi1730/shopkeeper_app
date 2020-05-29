@@ -1,10 +1,10 @@
 from django.contrib import admin
-from main import models
+from main import models, shopkeeper
 
 # Register your models here.
 admin.site.register([
-    models.Booking,
     models.Slot,
-    models.Buy_In,
-    models.Pick_Up
-])
+    models.PickUpBooking,
+    models.BuyInBooking,
+    shopkeeper.Shop
+    ])

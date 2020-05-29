@@ -1,36 +1,37 @@
 from django.db import models
-import requests
-
+from .shopkeeper import Shop
 # Create your models here.
 
 class Slot(models.Model):
-    start_time=models.TimeField()
-    stop_time=models.TimeField()
-   
-    
+    shop            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='slots')
+    slot_id         = models.CharField(max_length=16, unique=True, primary_key=True)
+    user_id         = models.CharField(max_length=16, unique=True)
+    user_name       = models.CharField(max_length=100)
+    start_time      = models.DateTimeField()
+    stop_time       = models.DateTimeField()
+    num_pickups     = models.IntegerField(default=0)
+    num_buyins      = models.IntegerField(default=0)
 
-class Buy_In(models.Model):
-    name=models.CharField(max_length=100)
-    no_of_buyin=models.AutoField(primary_key=True)
-    
+    def to_dict(self):
+        return {
+            "shop_name" : self.shop.name,
+            "shop_id"   : self.shop.id,
+            "slot_id"   : self.user_id,
+            "user_id"   : self.user_name,
+            "start_time": self.start_time,
+            "stop_time" : self.stop_time
+        }
 
-class Pick_Up(models.Model):
-    name=models.CharField(max_length=100)
-    notification=models.BooleanField()
-    message=models.TextField()
-    no_of_pickup=models.AutoField(primary_key=True)
+class BuyInBooking(models.Model):
+    id              = models.CharField(max_length=16, unique=True, primary_key=True)
+    slot            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='buyin')
+    is_fulfilled    = models.BooleanField(default=False)
 
 
-class Booking(models.Model):
-    types=(
-    ('b','buy_in'),
-    ('p','pick_up')
-    )
-    slot=models.ForeignKey('Slot',on_delete=models.CASCADE)
-    order_type=models.CharField(max_length=1,choices=types,default='b')
-    pick_up=models.ForeignKey('Pick_Up',blank=True, default = None,null=True,on_delete=models.CASCADE)
-    buy_in=models.ForeignKey('Buy_In',blank=True, default = None,null=True,on_delete=models.CASCADE)
 
-    @property
-    def polymorphic(self):
-        return self.pickup if self.order_type=='p' else self.buy_in
+
+class PickUpBooking(models.Model):
+    id              = models.CharField(max_length=16, unique=True, primary_key=True)
+    Slot            = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='pickup')
+    is_fulfilled    = models.BooleanField(default=False)
+    message         = models.CharField(max_length=256)
