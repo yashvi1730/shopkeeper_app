@@ -12,7 +12,7 @@ class ShopManager(BaseUserManager):
             raise ValueError('Users must have an email address')
 
         user = self.model(
-            email=self.ph_number,
+            ph_number=ph_number,
             id = id
         )
 
