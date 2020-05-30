@@ -1,5 +1,9 @@
 from rest_framework.response import Response
+<<<<<<< HEAD
 from main import models
+=======
+
+>>>>>>> upstream/master
 # from main import models,serializers
 # from rest_framework.generics import(
 #     ListAPIView,
@@ -15,6 +19,7 @@ from main import models
 #     queryset=models.Booking.objects.all()
 #     serializer_class=serializers.BookingSerializer
 #
+<<<<<<< HEAD
 def slots(request):
     slot=models.Slot.objects.all()
     context={
@@ -47,4 +52,6 @@ def buy_in(request):
 
     return render(request,'buy_in.html',context)
 
+=======
+>>>>>>> upstream/master
 
